@@ -1,3 +1,5 @@
+import type { PedidoStatus } from "./pedido.constant";
+
 export interface PedidoDetalleInput {
   producto_id: number;
   cantidad: number;
@@ -18,7 +20,8 @@ export interface IPedido {
   usuario_id: number;
   direccion_id?: number;
 
-  estado_codigo: string;
+  estado_codigo: PedidoStatus; 
+
   forma_pago_codigo: string;
 
   subtotal: number;
@@ -28,3 +31,5 @@ export interface IPedido {
 
   notas?: string;
 }
+
+

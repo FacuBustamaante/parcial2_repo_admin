@@ -6,7 +6,7 @@ import { AuthLayout } from "../shared/layout/AuthLayout";
 import { LoginPage } from "../modules/auth/index";
 import { RegisterPage } from "../modules/auth/index";
 import { ProtectedRoute } from "./ProtectedRoute";
-import { PedidoCajeroPage } from "../modules/pedido/pages/PedidoCajeroPage";
+import  PedidoCajeroPage  from "../modules/pedido/pages/PedidoCajeroPage";
 
 export const AppRouter = () => {
   return (

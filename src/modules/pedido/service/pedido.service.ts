@@ -1,4 +1,5 @@
 import apiClient from "../../../api/axiosInstance";
+import type { PedidoStatus } from "../types/pedido.constant";
 
 import type {
   IPedido,
@@ -58,7 +59,7 @@ export async function listPedidos(): Promise<IPedido[]> {
 
 export async function cambiarEstadoPedido(
   pedidoId: number,
-  nuevoEstado: string,
+  nuevoEstado: PedidoStatus,
 ): Promise<IPedido> {
   const response = await apiClient.patch<IPedido>(
     `${BASE}/${pedidoId}/estado`,
