@@ -1,0 +1,107 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  justify-content: center;
+  background-color: var(--color-bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* 🔥 Hover */
+.link:hover {
+  color: var(--color-primary);
+}
+
+.link:hover .icon {
+  transform: scale(1.1);
+}
+
+/* 🔥 Active link */
+.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 🔥 underline animado tipo SaaS */
+.link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+
+  width: 0%;
+  height: 2px;
+  background-color: var(--color-primary);
+
+  transition: width 0.3s ease;
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+.active::after {
+  width: 100%;
+}
+
+/* ICONOS */
+.icon {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+/* BOTÓN */
+.button {
+  background-color: var(--color-primary);
+  color: white;
+
+  padding: 10px 16px;
+  border-radius: var(--border-radius);
+  border: none;
+
+  cursor: pointer;
+  font-weight: 500;
+
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--color-primary-hover);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button:active {
+  transform: scale(0.95);
+}

@@ -7,6 +7,9 @@ import { LoginPage } from "../modules/auth/index";
 import { RegisterPage } from "../modules/auth/index";
 import { ProtectedRoute } from "./ProtectedRoute";
 import  PedidoCajeroPage  from "../modules/pedido/pages/PedidoCajeroPage";
+import IngredientePage from "../modules/ingrediente/pages/IngredientePage";
+import CategoriaPage from "../modules/categoria/pages/CategoriaPage";
+import ProductoPage from "../modules/producto/pages/ProductoPage";
 
 export const AppRouter = () => {
   return (
@@ -36,6 +39,9 @@ export const AppRouter = () => {
             }
           >
             <Route path="/cajero" element={<PedidoCajeroPage />} />
+            <Route path="/ingredientes" element={<IngredientePage />} /> 
+            <Route path="/categorias" element={<CategoriaPage />} />
+            <Route path="/productos" element={<ProductoPage />} />
           </Route>
         </Route>
         <Route path="/forbidden" element={<h1>No autorizado</h1>} />

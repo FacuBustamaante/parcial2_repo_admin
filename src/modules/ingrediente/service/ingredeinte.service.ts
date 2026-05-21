@@ -18,7 +18,7 @@ export async function listIngredientes(): Promise<IIngrediente[]> {
 
 // ── GET ONE ────────────────────────────────────────────────────────
 
-export async function getIngrediente(
+export async function getIngredientes(
   id: number,
 ): Promise<IIngrediente> {
   const response = await apiClient.get<IIngrediente>(

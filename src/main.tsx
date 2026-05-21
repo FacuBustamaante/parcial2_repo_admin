@@ -1,13 +1,24 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
 import { AppRouter } from "./router/appRouter";
 import { InitApp } from "./shared/InitApp";
+
 import "./index.css";
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <InitApp>
-      <AppRouter />
-    </InitApp>
+    <QueryClientProvider client={queryClient}>
+      <InitApp>
+        <AppRouter />
+      </InitApp>
+    </QueryClientProvider>
   </StrictMode>,
 );
