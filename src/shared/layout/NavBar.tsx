@@ -14,6 +14,7 @@ function Navbar({ onCreate }: Props) {
   const isIngredientes = location.pathname === "/ingredientes";
   const isCategorias = location.pathname === "/categorias";
   const isCajero = location.pathname === "/cajero";
+  const isAdmin = location.pathname === "/admin";
 
   const getButtonLabel = () => {
     if (isProductos) return "+ Añadir Producto";
@@ -60,14 +61,21 @@ function Navbar({ onCreate }: Props) {
               Cajero
             </Link>
           )}
+          {!isAdmin && (
+            <Link to="/admin" className={styles.link}>
+              <FaUser className={styles.icon} />
+              Admin
+            </Link>
+          )}
         </div>
 
-        {/* BUTTON */}
+        
         {!isHome && !isCajero && (
           <button onClick={onCreate} className={styles.button}>
             {getButtonLabel()}
           </button>
         )}
+
       </div>
     </div>
   );

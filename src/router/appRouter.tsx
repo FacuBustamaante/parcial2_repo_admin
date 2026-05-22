@@ -10,6 +10,7 @@ import  PedidoCajeroPage  from "../modules/pedido/pages/PedidoCajeroPage";
 import IngredientePage from "../modules/ingrediente/pages/IngredientePage";
 import CategoriaPage from "../modules/categoria/pages/CategoriaPage";
 import ProductoPage from "../modules/producto/pages/ProductoPage";
+import AdminPage from "../modules/admin/pages/AdminPage";
 
 export const AppRouter = () => {
   return (
@@ -42,6 +43,7 @@ export const AppRouter = () => {
             <Route path="/ingredientes" element={<IngredientePage />} /> 
             <Route path="/categorias" element={<CategoriaPage />} />
             <Route path="/productos" element={<ProductoPage />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
         </Route>
         <Route path="/forbidden" element={<h1>No autorizado</h1>} />
