@@ -5,7 +5,7 @@ export interface UserPublic {
   username: string;
   full_name: string;
   email: string;
-  role: UserRole;
+  roles: UserRole;
   disabled: boolean;
 }
 

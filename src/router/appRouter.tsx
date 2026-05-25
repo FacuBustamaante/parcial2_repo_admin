@@ -6,7 +6,7 @@ import { AuthLayout } from "../shared/layout/AuthLayout";
 import { LoginPage } from "../modules/auth/index";
 import { RegisterPage } from "../modules/auth/index";
 import { ProtectedRoute } from "./ProtectedRoute";
-import  PedidoCajeroPage  from "../modules/pedido/pages/PedidoCajeroPage";
+import PedidoCajeroPage from "../modules/pedido/pages/PedidoCajeroPage";
 import IngredientePage from "../modules/ingrediente/pages/IngredientePage";
 import CategoriaPage from "../modules/categoria/pages/CategoriaPage";
 import ProductoPage from "../modules/producto/pages/ProductoPage";
@@ -16,6 +16,7 @@ export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* ────────────────────────────────── Auth ───────────────────────────────────── */}
         <Route
           path="/login"
           element={
@@ -24,6 +25,7 @@ export const AppRouter = () => {
             </AuthLayout>
           }
         />
+
         <Route
           path="/register"
           element={
@@ -33,19 +35,28 @@ export const AppRouter = () => {
           }
         />
 
+        {/* ────────────────────────────────── App ───────────────────────────────────── */}
         <Route element={<AppLayout />}>
+          {/* ───────────────────────────────────── Cajero ───────────────────────────────────── */}
           <Route
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN", "STOCK", "PEDIDOS"]} />
-            }
+            element={<ProtectedRoute allowedRoles={["ADMIN", "PEDIDOS"]} />}
           >
             <Route path="/cajero" element={<PedidoCajeroPage />} />
-            <Route path="/ingredientes" element={<IngredientePage />} /> 
+          </Route>
+
+          {/* ───────────────────────────────────── Stock ───────────────────────────────────── */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN", "STOCK"]} />}>
+            <Route path="/ingredientes" element={<IngredientePage />} />
             <Route path="/categorias" element={<CategoriaPage />} />
             <Route path="/productos" element={<ProductoPage />} />
+          </Route>
+
+          {/* ───────────────────────────────────── Admin ───────────────────────────────────── */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
             <Route path="/admin" element={<AdminPage />} />
           </Route>
         </Route>
+
         <Route path="/forbidden" element={<h1>No autorizado</h1>} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

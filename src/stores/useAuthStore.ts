@@ -39,13 +39,12 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
 
 
-  // TODO Revisar roesl y role 
  hasRole: (...roles: UserRole[]) => {
     const user = get().user;
 
     if (!user) return false;
-
     return user.roles.some((role) =>
+      
       roles.includes(role),
     );
   },

@@ -18,19 +18,45 @@ export function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  e.preventDefault();
 
-    try {
-      await login(username, password);
-      navigate("/dashboard");
-    } catch {
-      // El error ya está en el store
-    } finally {
-      setIsLoading(false);
+  setIsLoading(true);
+  setError(null);
+
+  try {
+    await login(username, password);
+
+    // obtenemos el usuario actualizado desde zustand
+    const user = useAuthStore.getState().user;
+
+    if (!user) {
+      navigate("/forbidden");
+      return;
     }
-  };
+
+    if (user.roles.includes("ADMIN")) {
+      navigate("/admin");
+      return;
+    }
+
+    if (user.roles.includes("PEDIDOS")) {
+      navigate("/cajero");
+      return;
+    }
+
+    if (user.roles.includes("STOCK")) {
+      navigate("/productos");
+      return;
+    }
+
+    navigate("/forbidden");
+
+  } catch {
+    // El error ya está en el store
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div>
