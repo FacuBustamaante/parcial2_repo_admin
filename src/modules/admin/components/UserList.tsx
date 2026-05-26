@@ -9,13 +9,13 @@ type Props = {
 export default function UserList({ users }: Props) {
   const authUser = useAuthStore((state) => state.user);
 
+  const filtered = users.filter((user) => user.id !== authUser?.id);
+
   return (
-    <div>
-      {users
-        .filter((user) => user.id !== authUser?.id)
-        .map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 animate-fade-in-up">
+      {filtered.map((user) => (
+        <UserCard key={user.id} user={user} />
+      ))}
     </div>
   );
 }

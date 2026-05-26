@@ -9,109 +9,50 @@ import {
 import { useState } from "react";
 import CategoriaModal from "../components/modals/CategoriaModal";
 import Navbar from "../../../shared/layout/NavBar";
-
-import styles from "./CategoriaPage.module.css";
-
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
-
 
 function CategoriaPage() {
   const queryClient = useQueryClient();
 
-  // ── Manejo del Modal ────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categoriaActivo, setCategoriaActivo] = useState<ICategoria | null>(
-    null,
-  );
+  const [categoriaActivo, setCategoriaActivo] = useState<ICategoria | null>(null);
 
-  /*
-  ────────────────────────────────────────────────────────────────────────────
-  TanStack Query: el hook useQuery se utiliza para obtener datos de forma asíncrona. Mediante desestructuración, toma la propiedad data (renombrándola como categorias y dándole un valor por defecto []), junto con los estados isLoading y isError. 
-  
-  La consulta se identifica con la clave ["categorias"] y ejecuta la función getCategoria para traer los datos. Además, staleTime indica que esos datos se considerarán “frescos” durante 5 minutos, evitando refetch innecesarios en ese lapso. 
-  ────────────────────────────────────────────────────────────────────────────
-  */
-
-  // ── GET ────────────────────────────────────────────
-  const {
-    data: categorias = [],
-    isLoading,
-    //isError,
-  } = useQuery({
+  const { data: categorias = [], isLoading } = useQuery({
     queryKey: ["categorias"],
     queryFn: listCategorias,
     staleTime: 1000 * 60 * 5,
   });
 
-  /*
-  ────────────────────────────────────────────────────────────────────────────
-  Para las mutaciones con useMutation, el patrón es el mismo para CREATE, UPDATE y DELETE: se define mutationFn con la función que ejecuta la acción (por ejemplo createCategoria, updateCategoria o deleteCategoria) y, en onSuccess, se invalida la query ["categorias"] usando queryClient. invalidateQueries para forzar la actualización de los datos en caché; además se ejecutan efectos secundarios como cerrar un modal o limpiar formularios.
-  
-  En esencia, cada mutación se encarga de enviar cambios al servidor y luego sincronizar el estado local refrescando la lista de categorías automáticamente.
-  ────────────────────────────────────────────────────────────────────────────
-  */
-
-  // ── CREATE MUTATION  ─────────────────────────────────────────
   const createMutation = useMutation({
     mutationFn: createCategoria,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["categorias"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["categorias"] });
       setIsModalOpen(false);
     },
     onError: (error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error.message || "Ocurrió un error",
-      });
+      Swal.fire({ icon: "error", title: "Error", text: error.message || "Ocurrió un error" });
     },
   });
 
-  // ── UPDATE MUTATION ─────────────────────────────────────────
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      categoria,
-    }: {
-      id: number;
-      categoria: CreateCategoria;
-    }) => updateCategoria(id, categoria),
-
+    mutationFn: ({ id, categoria }: { id: number; categoria: CreateCategoria }) =>
+      updateCategoria(id, categoria),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categorias"] });
     },
     onError: (error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error.message || "Ocurrió un error",
-      });
+      Swal.fire({ icon: "error", title: "Error", text: error.message || "Ocurrió un error" });
     },
   });
-  // ── DELETE MUTATION  ─────────────────────────────────────────
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteCategoria(id),
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categorias"] });
-
-      Swal.fire({
-        title: "Eliminado",
-        text: "La categoría ha sido eliminada",
-        icon: "success",
-      });
+      Swal.fire({ title: "Eliminado", text: "La categoría ha sido eliminada", icon: "success" });
     },
   });
-
-  /*
-  Estos handlers gestionan la interacción de la UI con el estado y las mutaciones: handleOpenCreate prepara el formulario para crear una nueva categoría (resetea categoriaActivo y abre el modal), mientras que handleOpenEdit carga la categoría seleccionada en el estado y también abre el modal para editarla. handleCloseModal cierra el modal y limpia la categoría activa. Por otro lado, handleCreate, handleUpdate y handleDelete actúan como puentes hacia las mutaciones (createMutation, updateMutation, deleteMutation), ejecutando mutate con los datos correspondientes para crear, actualizar o eliminar una categoría, lo que dispara luego la lógica definida en useMutation (como refrescar la lista). 
-  */
-
-  // ── HANDLERS ────────────────────────────────────
 
   const handleOpenCreate = () => {
     setCategoriaActivo(null);
@@ -128,13 +69,10 @@ function CategoriaPage() {
     setCategoriaActivo(null);
   };
 
-  const handleCreate = (data: CreateCategoria) => {
-    createMutation.mutate(data);
-  };
+  const handleCreate = (data: CreateCategoria) => createMutation.mutate(data);
 
-  const handleUpdate = (id: number, data: CreateCategoria) => {
+  const handleUpdate = (id: number, data: CreateCategoria) =>
     updateMutation.mutate({ id, categoria: data });
-  };
 
   const handleDelete = (id: number) => {
     Swal.fire({
@@ -142,67 +80,67 @@ function CategoriaPage() {
       text: "No podrás revertir esta acción",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
-      if (result.isConfirmed) {
-        deleteMutation.mutate(id);
-      }
+      if (result.isConfirmed) deleteMutation.mutate(id);
     });
   };
 
   if (isLoading)
     return (
-      <div className={styles.loaderContainer}>
-        <ClipLoader />
+      <div className="flex min-h-screen items-center justify-center bg-(--bg)">
+        <ClipLoader color="var(--gold)" size={36} />
       </div>
     );
-  //if (isError) return <p>Hubo un error</p>;
+
   return (
-    <div>
+    <div className="flex min-h-screen bg-(--bg)">
       <Navbar onCreate={handleOpenCreate} />
 
-      <div className={styles.container}>
-        <h1 className={styles.title}>Categorías</h1>
+      <main className="flex-1 ml-64 p-8">
+        <div className="mb-8">
+          <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1">Gestión</p>
+          <h1 className="serif text-3xl font-semibold text-(--text)">Categorías</h1>
+        </div>
 
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
+        <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up">
+          <table className="w-full">
             <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Categoría Padre</th>
-                <th>Acciones</th>
+              <tr className="border-b border-(--line)">
+                {["#", "Nombre", "Descripción", "Categoría Padre", "Acciones"].map((h) => (
+                  <th key={h} className="px-5 py-3 text-left sans text-xs font-medium text-(--text-faint) uppercase tracking-wider">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-
             <tbody>
               {categorias.map((i, index) => {
                 const parent = categorias.find((c) => c.id === i.parent_id);
-
                 return (
-                  <tr key={i.id}>
-                    <td>{index + 1}</td>
-                    <td>{i.nombre}</td>
-                    <td>{i.descripcion}</td>
-                    <td>{parent ? parent.nombre : "Principal"}</td>
-                    <td className={styles.actions}>
-                      <button
-                        onClick={() => handleOpenEdit(i)}
-                        className={styles.editButton}
-                      >
-                        Editar
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(i.id)}
-                        className={styles.deleteButton}
-                      >
-                        Eliminar
-                      </button>
+                  <tr key={i.id} className="border-b border-(--line) last:border-0 hover:bg-(--surface-2) transition-colors">
+                    <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">{index + 1}</td>
+                    <td className="px-5 py-3.5 sans text-sm text-(--text) font-medium">{i.nombre}</td>
+                    <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">{i.descripcion}</td>
+                    <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">
+                      {parent ? parent.nombre : <span className="text-(--gold)">Principal</span>}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleOpenEdit(i)}
+                          className="sans text-xs px-3 py-1.5 rounded-(--r-sm) border border-(--line-strong) text-(--text-muted) hover:border-(--gold) hover:text-(--gold) transition-colors"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDelete(i.id)}
+                          className="sans text-xs px-3 py-1.5 rounded-(--r-sm) border border-red-500/20 text-red-400 hover:border-red-500/40 hover:text-red-300 transition-colors"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -220,17 +158,12 @@ function CategoriaPage() {
           />
         )}
 
-        {createMutation.isPending && (
-          <div className={styles.loaderContainer}>
-            <ClipLoader />
+        {(createMutation.isPending || updateMutation.isPending) && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+            <ClipLoader color="var(--gold)" size={36} />
           </div>
         )}
-        {updateMutation.isPending && (
-          <div className={styles.loaderContainer}>
-            <ClipLoader />
-          </div>
-        )}
-      </div>
+      </main>
     </div>
   );
 }

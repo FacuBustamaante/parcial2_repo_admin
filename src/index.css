@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+:root {
+   --bg: #0D0D0D;
+   --surface: #1A1A1A;
+   --surface-2: #232220;
+   --surface-3: #2A2826;
+   --line: rgba(245, 240, 232, 0.08);
+   --line-strong: rgba(245, 240, 232, 0.16);
+   --text: #F5F0E8;
+   --text-muted: rgba(245, 240, 232, 0.62);
+   --text-faint: rgba(245, 240, 232, 0.40);
+   --gold: #C9A84C;
+   --gold-deep: #A8862F;
+   --gold-soft: rgba(201, 168, 76, 0.14);
+   --gold-contrast: #1a1408;
+   --amber: #E0B450;
+   --blue: #6AA0D9;
+   --green: #6FB18A;
+
+   --serif: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+   --sans: "DM Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+   --mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+   --r-sm: 4px;
+   --r-md: 8px;
+   --r-lg: 14px;
+
+   --header-h: 76px;
+   --navbar-height: 120px;
+
+   --grid-row-gap: 32px;
+   --grid-col-gap: 24px;
+   --card-gap: 18px;
+   --title-scale: 1;
+}
+
+.serif {
+   font-family: var(--serif);
+}
+
+.sans {
+   font-family: var(--sans);
+}
+
+* {
+   box-sizing: border-box;
+}
+
+body {
+   background-color: var(--bg);
+}
+
+/*Animaciones*/
+.card {
+   display: flex;
+   flex-direction: column;
+   /*border: .5px solid var(--line);*/
+   border-radius: 15px;
+   overflow: hidden;
+   background: #fff;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+   transform: translateY(-4px);
+   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.flash {
+   animation: flashPulse 0.5s ease;
+}
+
+@keyframes flashPulse {
+   0% {
+      box-shadow: 0 0 0 0 rgba(196, 160, 80, 0.6);
+   }
+
+   50% {
+      box-shadow: 0 0 0 8px rgba(196, 160, 80, 0);
+   }
+
+   100% {
+      box-shadow: 0 0 0 0 rgba(196, 160, 80, 0);
+   }
+}
+
+/* ── Media ── */
+.media {
+   position: relative;
+   height: 300px;
+   overflow: hidden;
+   border-radius: var(--r-md);
+}
+
+.veil {
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(to top, rgba(20, 15, 10, 0.786) 0%, transparent 55%);
+   opacity: 0;
+   transition: opacity 0.3s ease;
+}
+
+.overlay {
+   position: absolute;
+   inset: 0;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   justify-content: flex-end;
+   padding: 16px;
+   opacity: 0;
+   transition: opacity 0.3s ease;
+}
+
+.card:hover .veil,
+.card:hover .overlay {
+   opacity: 1;
+}
+
+.grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+   gap: 24px;
+}
+
+@theme {
+   --animate-fade-in-up: fadeInUp 0.35s ease both;
+   --animate-slide-up: slideUp 0.25s ease;
+}
+
+@keyframes fadeInUp {
+   from {
+      opacity: 0;
+      transform: translateY(16px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@keyframes slideUp {
+   from {
+      opacity: 0;
+      transform: translateY(20px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+/* ── Order status badges ── */
+.status-badge {
+   font-size: 0.7rem;
+   font-family: var(--sans);
+   font-weight: 600;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   padding: 0.125rem 0.5rem;
+   border-radius: 9999px;
+   border-width: 1px;
+   border-style: solid;
+}
+
+.status-PENDIENTE  { color: var(--amber); background: rgba(224, 180, 80, 0.10); border-color: rgba(224, 180, 80, 0.20); }
+.status-CONFIRMADO { color: var(--green); background: rgba(111, 177, 138, 0.10); border-color: rgba(111, 177, 138, 0.20); }
+.status-ENVIADO    { color: var(--blue);  background: rgba(106, 160, 217, 0.10); border-color: rgba(106, 160, 217, 0.20); }
+.status-ENTREGADO  { color: var(--green); background: rgba(111, 177, 138, 0.10); border-color: rgba(111, 177, 138, 0.20); }
+.status-CANCELADO  { color: #f87171;      background: rgba(248, 113, 113, 0.10); border-color: rgba(248, 113, 113, 0.20); }
+.status-EN_PREP    { color: var(--blue);  background: rgba(106, 160, 217, 0.10); border-color: rgba(106, 160, 217, 0.20); }
+.status-EN_CAMINO  { color: var(--blue);  background: rgba(106, 160, 217, 0.10); border-color: rgba(106, 160, 217, 0.20); }
+
+.media-detail {
+   border-radius: 12px;
+   overflow: hidden;
+   aspect-ratio: 1;
+}
+
+.grid-detail {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 40px;
+   align-items: start;
+}

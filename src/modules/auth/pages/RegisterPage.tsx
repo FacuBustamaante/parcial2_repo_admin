@@ -56,118 +56,142 @@ export function RegisterPage() {
     }
   };
 
+  const inputClass =
+    "w-full bg-(--surface-2) border border-(--line-strong) rounded-(--r-md) px-4 py-2.5 sans text-sm text-(--text) placeholder:text-(--text-faint) focus:outline-none focus:border-(--gold) focus:ring-1 focus:ring-(--gold) transition-colors disabled:opacity-50";
+
+  const labelClass = "sans text-sm font-medium text-(--text-muted)";
+
   return (
-    <div>
-      <h1>Registrarse</h1>
+    <div className="min-h-screen bg-(--bg) flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-lg bg-(--surface) border border-(--line-strong) rounded-(--r-lg) p-8 animate-fade-in-up">
 
-      <form onSubmit={handleSubmit}>
-        {error && <div>{error}</div>}
-
-        {/* NOMBRE */}
-        <div>
-          <label htmlFor="nombre">Nombre</label>
-
-          <input
-            id="nombre"
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-            disabled={isLoading}
-            placeholder="Tu nombre"
-          />
+        <div className="text-center mb-8">
+          <h1 className="serif text-3xl font-semibold text-(--gold)">Crear cuenta</h1>
+          <p className="sans text-sm text-(--text-muted) mt-1">Completá tus datos para registrarte</p>
         </div>
 
-        {/* APELLIDO */}
-        <div>
-          <label htmlFor="apellido">Apellido</label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {error && (
+            <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-(--r-md) sans text-sm text-red-400">
+              {error}
+            </div>
+          )}
 
-          <input
-            id="apellido"
-            type="text"
-            name="apellido"
-            value={formData.apellido}
-            onChange={handleChange}
-            required
+          {/* NOMBRE / APELLIDO */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="nombre" className={labelClass}>Nombre</label>
+              <input
+                id="nombre"
+                type="text"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                required
+                disabled={isLoading}
+                placeholder="Tu nombre"
+                className={inputClass}
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="apellido" className={labelClass}>Apellido</label>
+              <input
+                id="apellido"
+                type="text"
+                name="apellido"
+                value={formData.apellido}
+                onChange={handleChange}
+                required
+                disabled={isLoading}
+                placeholder="Tu apellido"
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          {/* EMAIL */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="email" className={labelClass}>Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="tu@email.com"
+              className={inputClass}
+            />
+          </div>
+
+          {/* CELULAR */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="celular" className={labelClass}>Celular</label>
+            <input
+              id="celular"
+              type="text"
+              name="celular"
+              value={formData.celular}
+              onChange={handleChange}
+              disabled={isLoading}
+              placeholder="Tu celular"
+              className={inputClass}
+            />
+          </div>
+
+          {/* PASSWORD */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="password" className={labelClass}>Contraseña</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="Tu contraseña"
+              className={inputClass}
+            />
+          </div>
+
+          {/* CONFIRM PASSWORD */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="passwordConfirm" className={labelClass}>Confirmar Contraseña</label>
+            <input
+              id="passwordConfirm"
+              type="password"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              required
+              disabled={isLoading}
+              placeholder="Repetí tu contraseña"
+              className={inputClass}
+            />
+          </div>
+
+          <button
+            type="submit"
             disabled={isLoading}
-            placeholder="Tu apellido"
-          />
-        </div>
+            className="w-full bg-(--gold) text-(--gold-contrast) font-semibold sans rounded-(--r-md) py-2.5 text-sm hover:bg-(--gold-deep) transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          >
+            {isLoading ? "Registrando..." : "Registrarse"}
+          </button>
+        </form>
 
-        {/* EMAIL */}
-        <div>
-          <label htmlFor="email">Email</label>
-
-          <input
-            id="email"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            disabled={isLoading}
-            placeholder="tu@email.com"
-          />
-        </div>
-
-        {/* CELULAR */}
-        <div>
-          <label htmlFor="celular">Celular</label>
-
-          <input
-            id="celular"
-            type="text"
-            name="celular"
-            value={formData.celular}
-            onChange={handleChange}
-            disabled={isLoading}
-            placeholder="Tu celular"
-          />
-        </div>
-
-        {/* PASSWORD */}
-        <div>
-          <label htmlFor="password">Contraseña</label>
-
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            disabled={isLoading}
-            placeholder="Tu contraseña"
-          />
-        </div>
-
-        {/* CONFIRM PASSWORD */}
-        <div>
-          <label htmlFor="passwordConfirm">Confirmar Contraseña</label>
-
-          <input
-            id="passwordConfirm"
-            type="password"
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            required
-            disabled={isLoading}
-            placeholder="Confirmar contraseña"
-          />
-        </div>
-
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Registrando..." : "Registrarse"}
-        </button>
-      </form>
-
-      <p>
-        ¿Ya tienes cuenta?{" "}
-        <button type="button" onClick={() => navigate("/login")}>
-          Iniciar Sesión
-        </button>
-      </p>
+        <p className="mt-6 text-center sans text-sm text-(--text-muted)">
+          ¿Ya tenés cuenta?{" "}
+          <button
+            type="button"
+            onClick={() => navigate("/login")}
+            className="text-(--gold) hover:text-(--amber) transition-colors font-medium"
+          >
+            Iniciar Sesión
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

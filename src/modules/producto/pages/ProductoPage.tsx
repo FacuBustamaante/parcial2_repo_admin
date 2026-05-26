@@ -13,36 +13,24 @@ import Navbar from "../../../shared/layout/NavBar";
 
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
-
-import styles from "./ProductoPage.module.css";
-// ───────────────────────────────────────────────────────────────────────────────────────
-//Implemento un mapper en el producto para desacoplar el modelo de base de datos de la representación que consumen el frontend y la API, evitando exponer directamente estructuras internas como las relaciones de SQLAlchemy. Esto te permite transformar el Producto a un formato controlado (ProductoPublic) donde decido explícitamente qué datos enviar (como IDs o entidades completas), garantizando consistencia en la respuesta, mejorando la mantenibilidad del código y facilitando cambios futuros en el modelo sin romper el contrato con el frontend.
-// ───────────────────────────────────────────────────────────────────────────────────────
-
 import { mapProductoToForm } from "../helpers/mapper/ProductoMapper";
 
 function ProductoPage() {
   const queryClient = useQueryClient();
 
-  // ── Modal ────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [productoActivo, setProductoActivo] = useState<CreateProducto | null>(
-    null,
-  ); //IProducto
+  const [productoActivo, setProductoActivo] = useState<CreateProducto | null>(null);
   const [productoId, setProductoId] = useState<number | null>(null);
 
-  // ── GET ────────────────────────────
   const { data: productos = [], isLoading } = useQuery({
     queryKey: ["productos"],
     queryFn: listProductos,
     staleTime: 1000 * 60 * 5,
   });
 
-  // ── CREATE ─────────────────────────
   const createMutation = useMutation({
     mutationFn: createProducto,
     onSuccess: () => {
-      //invalidación del cache -> useQuery actualiza la tabla
       queryClient.invalidateQueries({ queryKey: ["productos"] });
       setIsModalOpen(false);
     },
@@ -51,11 +39,9 @@ function ProductoPage() {
     },
   });
 
-  // ── UPDATE ─────────────────────────
   const updateMutation = useMutation({
     mutationFn: ({ id, producto }: { id: number; producto: CreateProducto }) =>
       updateProducto(id, producto),
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["productos"] });
     },
@@ -64,7 +50,6 @@ function ProductoPage() {
     },
   });
 
-  // ── DELETE ─────────────────────────
   const deleteMutation = useMutation({
     mutationFn: (id: number) => deleteProducto(id),
     onSuccess: () => {
@@ -73,7 +58,6 @@ function ProductoPage() {
     },
   });
 
-  // ── HANDLERS ───────────────────────
   const handleOpenCreate = () => {
     setProductoActivo(null);
     setIsModalOpen(true);
@@ -90,13 +74,10 @@ function ProductoPage() {
     setProductoActivo(null);
   };
 
-  const handleCreate = (data: CreateProducto) => {
-    createMutation.mutate(data);
-  };
+  const handleCreate = (data: CreateProducto) => createMutation.mutate(data);
 
-  const handleUpdate = (id: number, data: CreateProducto) => {
+  const handleUpdate = (id: number, data: CreateProducto) =>
     updateMutation.mutate({ id, producto: data });
-  };
 
   const handleDelete = (id: number) => {
     Swal.fire({
@@ -107,62 +88,60 @@ function ProductoPage() {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
-      if (result.isConfirmed) {
-        deleteMutation.mutate(id);
-      }
+      if (result.isConfirmed) deleteMutation.mutate(id);
     });
   };
 
-  // ── LOADING ───────────────────────
   if (isLoading)
     return (
-      <div className={styles.loaderContainer}>
-        <ClipLoader />
+      <div className="flex min-h-screen items-center justify-center bg-(--bg)">
+        <ClipLoader color="var(--gold)" size={36} />
       </div>
     );
 
-  // ── UI ────────────────────────────
   return (
-    <div>
+    <div className="flex min-h-screen bg-(--bg)">
       <Navbar onCreate={handleOpenCreate} />
 
-      <div className={styles.container}>
-        <h1 className={styles.title}>Productos</h1>
+      <main className="flex-1 ml-64 p-8">
+        <div className="mb-8">
+          <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1">Gestión</p>
+          <h1 className="serif text-3xl font-semibold text-(--text)">Productos</h1>
+        </div>
 
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
+        <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up">
+          <table className="w-full">
             <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Acciones</th>
+              <tr className="border-b border-(--line)">
+                {["#", "Nombre", "Precio", "Stock", "Acciones"].map((h) => (
+                  <th key={h} className="px-5 py-3 text-left sans text-xs font-medium text-(--text-faint) uppercase tracking-wider">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-
             <tbody>
               {productos.map((p, index) => (
-                <tr key={p.id}>
-                  <td>{index + 1}</td>
-                  <td>{p.nombre}</td>
-                  <td>${p.precio_base}</td>
-                  <td>{p.stock_cantidad}</td>
-
-                  <td className={styles.actions}>
-                    <button
-                      onClick={() => handleOpenEdit(p)}
-                      className={styles.editButton}
-                    >
-                      Editar
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(p.id)}
-                      className={styles.deleteButton}
-                    >
-                      Eliminar
-                    </button>
+                <tr key={p.id} className="border-b border-(--line) last:border-0 hover:bg-(--surface-2) transition-colors">
+                  <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">{index + 1}</td>
+                  <td className="px-5 py-3.5 sans text-sm text-(--text) font-medium">{p.nombre}</td>
+                  <td className="px-5 py-3.5 sans text-sm text-(--gold)">${p.precio_base}</td>
+                  <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">{p.stock_cantidad}</td>
+                  <td className="px-5 py-3.5">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleOpenEdit(p)}
+                        className="sans text-xs px-3 py-1.5 rounded-(--r-sm) border border-(--line-strong) text-(--text-muted) hover:border-(--gold) hover:text-(--gold) transition-colors"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDelete(p.id)}
+                        className="sans text-xs px-3 py-1.5 rounded-(--r-sm) border border-red-500/20 text-red-400 hover:border-red-500/40 hover:text-red-300 transition-colors"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -181,11 +160,11 @@ function ProductoPage() {
         )}
 
         {(createMutation.isPending || updateMutation.isPending) && (
-          <div className={styles.loaderContainer}>
-            <ClipLoader />
+          <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+            <ClipLoader color="var(--gold)" size={36} />
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
