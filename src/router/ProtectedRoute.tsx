@@ -7,27 +7,27 @@ import type { UserRole } from "../modules/auth/types/api";
 // ───────────────────────────────────────────────────────────────────────
 
 type Props = {
-  allowedRoles: UserRole[];
+   allowedRoles: UserRole[];
 };
 
 export const ProtectedRoute = ({ allowedRoles }: Props) => {
-  const { user, hasRole, isLoading } = useAuthStore();
-  
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-sm text-zinc-500">Restaurando sesión…</p>
-      </div>
-    );
-  }
+   const { user, hasRole, isLoading } = useAuthStore();
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+   if (isLoading) {
+      return (
+         <div className="flex min-h-screen items-center justify-center">
+            <p className="text-sm text-zinc-500">Restaurando sesión…</p>
+         </div>
+      );
+   }
 
-  if (!hasRole(...allowedRoles)) {
-    return <Navigate to="/forbidden" replace />;
-  }
+   if (!user) {
+      return <Navigate to="/login" replace />;
+   }
 
-  return <Outlet />;
+   if (!hasRole(...allowedRoles)) {
+      return <Navigate to="/forbidden" replace />;
+   }
+
+   return <Outlet />;
 };

@@ -13,17 +13,16 @@ import { useAuthStore } from "../stores/useAuthStore";
 
 
 export const apiClient = axios.create({
-  baseURL: getApiBase(),
-  withCredentials: true, // ¡Importante! Incluye cookies httpOnly
-  timeout: 10000, 
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
+   baseURL: getApiBase(),
+   withCredentials: true, // ¡Importante! Incluye cookies httpOnly
+   timeout: 10000,
+   headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+   },
 });
 
 /**  
- 
 ¿Qué es un interceptor?  --> es una función que Axios ejecuta:
 
 ANTES de enviar una request
@@ -38,13 +37,13 @@ o DESPUÉS de recibir una response
 
 // ───────────────────────────────────────────────────────────────────────
 apiClient.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error: AxiosError) => {
-    console.error("Error en request:", error);
-    return Promise.reject(error);
-  },
+   (config) => {
+      return config;
+   },
+   (error: AxiosError) => {
+      console.error("Error en request:", error);
+      return Promise.reject(error);
+   },
 );
 
 // ───────────────────────────────────────────────────────────────────────
@@ -52,16 +51,16 @@ apiClient.interceptors.request.use(
 // Si hay error, revisa si el backend devolvió 401 Unauthorized; si pasa eso, limpia la sesión del usuario con clearSession() porque significa que el login expiró o el usuario  ya no está autenticado.
 // ───────────────────────────────────────────────────────────────────────
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response;
-  },
-  async (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      console.warn("Sesión expirada (401), limpiando...");
-      useAuthStore.getState().clearSession();
-    }
-    return Promise.reject(error);
-  },
+   (response: AxiosResponse) => {
+      return response;
+   },
+   async (error: AxiosError) => {
+      if (error.response?.status === 401) {
+         console.warn("Sesión expirada (401), limpiando...");
+         useAuthStore.getState().clearSession();
+      }
+      return Promise.reject(error);
+   },
 );
 
 

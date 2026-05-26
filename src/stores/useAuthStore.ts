@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import * as authApi from "../modules/auth/service/authApi";
 import type {
-  UserPublic,
-  RegisterPayload,
-  UserRole,
+   UserPublic,
+   RegisterPayload,
+   UserRole,
 } from "../modules/auth/types/api";
 
 // ───────────────────────────────────────────────────────────────────────
@@ -11,111 +11,111 @@ import type {
 // ───────────────────────────────────────────────────────────────────────
 
 interface AuthState {
-  user: UserPublic | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
+   user: UserPublic | null;
+   isAuthenticated: boolean;
+   isLoading: boolean;
+   error: string | null;
 
-  hasRole: (...roles: UserRole[]) => boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<void>;
-  logout: () => Promise<void>;
-  checkAuth: () => Promise<void>;
-  clearSession: () => void;
-  setError: (msg: string | null) => void;
+   hasRole: (...roles: UserRole[]) => boolean;
+   login: (email: string, password: string) => Promise<void>;
+   register: (payload: RegisterPayload) => Promise<void>;
+   logout: () => Promise<void>;
+   checkAuth: () => Promise<void>;
+   clearSession: () => void;
+   setError: (msg: string | null) => void;
 }
 
 export const useAuthStore = create<AuthState>()((set, get) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: true,
-  error: null,
+   user: null,
+   isAuthenticated: false,
+   isLoading: true,
+   error: null,
 
-  setError: (msg) => set({ error: msg }),
+   setError: (msg) => set({ error: msg }),
 
-  // ───────────────────────────────────────────────────────────────────────
-  // hasRole permite verificar si el usuario tiene ciertos roles para controlar permisos o rutas protegidas.
-  // ───────────────────────────────────────────────────────────────────────
+   // ───────────────────────────────────────────────────────────────────────
+   // hasRole permite verificar si el usuario tiene ciertos roles para controlar permisos o rutas protegidas.
+   // ───────────────────────────────────────────────────────────────────────
 
 
 
- hasRole: (...roles: UserRole[]) => {
-    const user = get().user;
+   hasRole: (...roles: UserRole[]) => {
+      const user = get().user;
 
-    if (!user) return false;
-    return user.roles.some((role) =>
-      
-      roles.includes(role),
-    );
-  },
+      if (!user) return false;
+      return user.roles.some((role) =>
 
-  // ───────────────────────────────────────────────────────────────────────
-  // clearSession sirve para borrar rápidamente la sesión desde cualquier parte de la app, por ejemplo cuando un interceptor de Axios detecta un 401 Unauthorized
-  // ───────────────────────────────────────────────────────────────────────
+         roles.includes(role),
+      );
+   },
 
-  clearSession: () =>
-    set({ user: null, isAuthenticated: false, isLoading: false, error: null }),
+   // ───────────────────────────────────────────────────────────────────────
+   // clearSession sirve para borrar rápidamente la sesión desde cualquier parte de la app, por ejemplo cuando un interceptor de Axios detecta un 401 Unauthorized
+   // ───────────────────────────────────────────────────────────────────────
 
-  // ───────────────────────────────────────────────────────────────────────
-  // checkAuth se ejecuta normalmente al iniciar la aplicación para rehidratar la sesión. Como la cookie HTTPOnly viaja automáticamente al backend, el frontend llama a /auth/me; si la cookie sigue siendo válida, el backend devuelve el usuario y Zustand actualiza el store como autenticado. Si falla, el usuario queda anónimo.
-  // ───────────────────────────────────────────────────────────────────────
+   clearSession: () =>
+      set({ user: null, isAuthenticated: false, isLoading: false, error: null }),
 
-  checkAuth: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const user = await authApi.requestMe();
-      set({ user, isAuthenticated: true, isLoading: false });
-    } catch {
-      set({ user: null, isAuthenticated: false, isLoading: false });
-    }
-  },
+   // ───────────────────────────────────────────────────────────────────────
+   // checkAuth se ejecuta normalmente al iniciar la aplicación para rehidratar la sesión. Como la cookie HTTPOnly viaja automáticamente al backend, el frontend llama a /auth/me; si la cookie sigue siendo válida, el backend devuelve el usuario y Zustand actualiza el store como autenticado. Si falla, el usuario queda anónimo.
+   // ───────────────────────────────────────────────────────────────────────
 
-  // ───────────────────────────────────────────────────────────────────────
-  // login primero envía usuario y contraseña al backend, el backend crea la cookie HTTPOnly, y luego el frontend llama nuevamente a /me para obtener los datos del usuario y guardarlos en el store.
-  // ───────────────────────────────────────────────────────────────────────
+   checkAuth: async () => {
+      set({ isLoading: true, error: null });
+      try {
+         const user = await authApi.requestMe();
+         set({ user, isAuthenticated: true, isLoading: false });
+      } catch {
+         set({ user: null, isAuthenticated: false, isLoading: false });
+      }
+   },
 
-  login: async (email, password) => {
-    set({ isLoading: true, error: null });
-    try {
-      await authApi.requestLogin(email, password);
-      const user = await authApi.requestMe();
-      set({ user, isAuthenticated: true, isLoading: false });
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Error de inicio de sesión";
-      set({ user: null, isAuthenticated: false, isLoading: false, error: msg });
-      throw e;
-    }
-  },
+   // ───────────────────────────────────────────────────────────────────────
+   // login primero envía usuario y contraseña al backend, el backend crea la cookie HTTPOnly, y luego el frontend llama nuevamente a /me para obtener los datos del usuario y guardarlos en el store.
+   // ───────────────────────────────────────────────────────────────────────
 
-  // ───────────────────────────────────────────────────────────────────────
-  // register registra al usuario y luego reutiliza login para iniciar sesión automáticamente después del registro.
-  // ───────────────────────────────────────────────────────────────────────
+   login: async (email, password) => {
+      set({ isLoading: true, error: null });
+      try {
+         await authApi.requestLogin(email, password);
+         const user = await authApi.requestMe();
+         set({ user, isAuthenticated: true, isLoading: false });
+      } catch (e) {
+         const msg = e instanceof Error ? e.message : "Error de inicio de sesión";
+         set({ user: null, isAuthenticated: false, isLoading: false, error: msg });
+         throw e;
+      }
+   },
 
-  register: async (payload) => {
-    set({ isLoading: true, error: null });
-    try {
-      await authApi.requestRegister(payload);
-      set({ isLoading: false });
-      await get().login(payload.email, payload.password);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Error al registrarse";
-      set({ isLoading: false, error: msg });
-      throw e;
-    }
-  },
+   // ───────────────────────────────────────────────────────────────────────
+   // register registra al usuario y luego reutiliza login para iniciar sesión automáticamente después del registro.
+   // ───────────────────────────────────────────────────────────────────────
 
-  // ───────────────────────────────────────────────────────────────────────
-  //logout intenta invalidar la sesión en el backend, pero incluso si falla la red igualmente limpia el estado local para ocultar contenido protegido.
-  // ───────────────────────────────────────────────────────────────────────
+   register: async (payload) => {
+      set({ isLoading: true, error: null });
+      try {
+         await authApi.requestRegister(payload);
+         set({ isLoading: false });
+         await get().login(payload.email, payload.password);
+      } catch (e) {
+         const msg = e instanceof Error ? e.message : "Error al registrarse";
+         set({ isLoading: false, error: msg });
+         throw e;
+      }
+   },
 
-  logout: async () => {
-    try {
-      await authApi.requestLogout();
-    } catch {
-      // Aun si falla la red, limpiamos el estado local: el usuario
-      // dejará de ver contenido protegido y un eventual 401 posterior
-      // terminará de sincronizar la cookie.
-    }
-    set({ user: null, isAuthenticated: false, error: null, isLoading: false });
-  },
+   // ───────────────────────────────────────────────────────────────────────
+   //logout intenta invalidar la sesión en el backend, pero incluso si falla la red igualmente limpia el estado local para ocultar contenido protegido.
+   // ───────────────────────────────────────────────────────────────────────
+
+   logout: async () => {
+      try {
+         await authApi.requestLogout();
+      } catch {
+         // Aun si falla la red, limpiamos el estado local: el usuario
+         // dejará de ver contenido protegido y un eventual 401 posterior
+         // terminará de sincronizar la cookie.
+      }
+      set({ user: null, isAuthenticated: false, error: null, isLoading: false });
+   },
 }));
