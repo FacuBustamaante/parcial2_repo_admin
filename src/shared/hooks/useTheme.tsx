@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 export function useTheme() {
    const [theme, setTheme] = useState(() => {
-      // Leer del localStorage, o usar 'dark' como default (ya que tu web es dark)
       return localStorage.getItem('theme') ?? 'dark'
    })
 

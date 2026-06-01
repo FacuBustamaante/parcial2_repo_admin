@@ -7,7 +7,7 @@ const columnAccent: Record<PedidoStatus, string> = {
   PENDIENTE:  "text-(--amber) bg-amber-500/10 border-amber-500/20",
   CONFIRMADO: "text-(--green) bg-green-500/10 border-green-500/20",
   EN_PREP:    "text-(--blue) bg-blue-500/10 border-blue-500/20",
-  EN_CAMINO:  "text-(--blue) bg-blue-500/10 border-blue-500/20",
+  LISTO:  "text-(--blue) bg-blue-500/10 border-blue-500/20",
   ENTREGADO:  "text-(--green) bg-green-500/10 border-green-500/20",
 };
 

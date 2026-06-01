@@ -10,6 +10,8 @@ import CategoriaPage from "../modules/categoria/pages/CategoriaPage";
 import ProductoPage from "../modules/producto/pages/ProductoPage";
 import AdminPage from "../modules/admin/pages/AdminPage";
 import Statistics from "../modules/admin/pages/Statistics";
+import CocinaPage from "../modules/KDS/pages/CocinaPage";
+import Forbidden from "../shared/layout/Forbidden";
 
 export const AppRouter = () => {
    return (
@@ -38,7 +40,7 @@ export const AppRouter = () => {
             <Route element={<AppLayout />}>
                {/* ───────────────────────────────────── Cajero ───────────────────────────────────── */}
                <Route
-                  element={<ProtectedRoute allowedRoles={["ADMIN", "PEDIDOS"]} />}
+                  element={<ProtectedRoute allowedRoles={["ADMIN", "CAJERO"]} />}
                >
                   <Route path="/cajero" element={<PedidoCajeroPage />} />
                </Route>
@@ -55,9 +57,13 @@ export const AppRouter = () => {
                   <Route path="/admin" element={<AdminPage />} />
                   <Route path="/statistics" element={<Statistics />} />
                </Route>
+               {/* ───────────────────────────────────── Cocina  ───────────────────────────────────── */}
+               <Route element={<ProtectedRoute allowedRoles={["ADMIN", "COCINA"]} />}>
+                  <Route path="/cocina" element={<CocinaPage />} />
+               </Route>
             </Route>
 
-            <Route path="/forbidden" element={<h1>No autorizado</h1>} />
+            <Route path="/forbidden" element={<Forbidden />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
          </Routes>
       </BrowserRouter>

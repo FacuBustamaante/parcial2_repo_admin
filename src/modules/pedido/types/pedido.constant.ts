@@ -1,19 +1,34 @@
 export const PEDIDO_STATUSES = [
-  "CANCELADO",
-  "PENDIENTE",
-  "CONFIRMADO",
-  "EN_PREP",
-  "EN_CAMINO",
-  "ENTREGADO"
+   "CANCELADO",
+   "PENDIENTE",
+   "CONFIRMADO",
+   "EN_PREP",
+   "LISTO",
+   "ENTREGADO"
+] as const;
+
+export const COCINA_STATUSES = [
+   "CONFIRMADO",
+   "EN_PREP",
+   "LISTO"
+] as const;
+
+export const CAJERO_STATUSES = [
+   "CANCELADO",
+   "PENDIENTE",
+   "CONFIRMADO",
+   "LISTO",
+   "ENTREGADO"
 ] as const;
 
 export type PedidoStatus = typeof PEDIDO_STATUSES[number];
 
 export const STATUS_LABEL: Record<PedidoStatus, string> = {
-  CANCELADO: "Cancelado",
-  PENDIENTE: "Pendiente",
-  CONFIRMADO: "Confirmado",
-  EN_PREP: "En preparación",
-  EN_CAMINO: "En camino",
-  ENTREGADO: "Entregado",
+   CANCELADO: "Cancelado",
+   PENDIENTE: "Pendiente",
+   CONFIRMADO: "Confirmado",
+   EN_PREP: "En preparación",
+   LISTO: "Listo para entregar",
+   ENTREGADO: "Entregado",
 };
+

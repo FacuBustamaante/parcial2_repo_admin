@@ -49,6 +49,16 @@ export function LoginPage() {
             return;
          }
 
+         if (user.roles.includes("COCINA")) {
+            navigate("/cocina");
+            return;
+         }
+
+         if (user.roles.includes("CAJERO")) {
+            navigate("/cajero");
+            return;
+         }
+
          navigate("/forbidden");
 
       } catch {

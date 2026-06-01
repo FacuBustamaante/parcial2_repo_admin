@@ -25,6 +25,10 @@ export const ProtectedRoute = ({ allowedRoles }: Props) => {
       return <Navigate to="/login" replace />;
    }
 
+   if(hasRole("COCINA") && allowedRoles.includes("COCINA")) {
+      return <Outlet />;
+   }
+
    if (!hasRole(...allowedRoles)) {
       return <Navigate to="/forbidden" replace />;
    }
