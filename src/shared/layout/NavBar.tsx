@@ -32,6 +32,7 @@ function Navbar({ onCreate }: Props) {
       "/productos": "Añadir Producto",
       "/categorias": "Añadir Categoría",
       "/ingredientes": "Añadir Ingrediente",
+      "/admin": "Añadir Usuario",
    };
 
    const showAdd = onCreate && addLabels[path];

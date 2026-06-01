@@ -5,7 +5,7 @@ export interface UserPublic {
   username: string;
   full_name: string;
   email: string;
-  roles: UserRole;
+  roles: UserRole[];
   disabled: boolean;
 }
 
@@ -15,4 +15,8 @@ export type RegisterPayload = {
   email: string;
   celular?: string;
   password: string;
+};
+
+export type RegisterPayloadWithRole = RegisterPayload & {
+  roles: UserRole[];
 };
