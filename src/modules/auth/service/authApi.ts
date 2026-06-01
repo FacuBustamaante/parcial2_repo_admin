@@ -39,10 +39,21 @@ export async function requestRegister(
 ): Promise<void> {
 
   await apiClient.post(
-    `${AUTH}/register`,
+    `${AUTH}/usuarios`,
     payload,
   );
 }    
+
+export async function requestRegisterAdmin(
+  payload: RegisterPayload,
+): Promise<void> {
+
+  await apiClient.post(
+    `${AUTH}/usuarios`,
+    payload,
+  );
+}    
+
 
 /** Rehidrata el estado de autenticación leyendo el usuario desde el backend. 
 No recibe el token: el navegador lo envía automáticamente vía cookie
