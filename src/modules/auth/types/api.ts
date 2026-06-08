@@ -1,22 +1,22 @@
 export type UserRole = 'ADMIN' | 'STOCK' | 'PEDIDOS' | 'COCINA' | 'CAJERO';
 
 export interface UserPublic {
-  id: number;
-  username: string;
-  full_name: string;
-  email: string;
-  roles: UserRole[];
-  disabled: boolean;
+   id: number;
+   username: string;
+   full_name: string;
+   email: string;
+   roles: UserRole[];
+   disabled: boolean;
 }
 
 export type RegisterPayload = {
-  nombre: string;
-  apellido: string;
-  email: string;
-  celular?: string;
-  password: string;
+   nombre: string;
+   apellido: string;
+   email: string;
+   celular?: string;
+   password: string;
 };
 
 export type RegisterPayloadWithRole = RegisterPayload & {
-  roles: UserRole[];
+   roles: UserRole[];
 };
