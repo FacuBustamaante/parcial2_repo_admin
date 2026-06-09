@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ICategoria, CreateCategoria } from "../types/ICategoria";
+import { FaPlus } from "react-icons/fa";
 import {
   updateCategoria,
   createCategoria,
@@ -99,9 +100,19 @@ function CategoriaPage() {
       <Navbar onCreate={handleOpenCreate} />
 
       <main className="flex-1 ml-64 p-8">
-        <div className="mb-8">
-          <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1">Gestión</p>
-          <h1 className="serif text-3xl font-semibold text-(--text)">Categorías</h1>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1">Gestión</p>
+            <h1 className="serif text-3xl font-semibold text-(--text)">Categorías</h1>
+          </div>
+
+          <button
+            onClick={handleOpenCreate}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-(--gold) text-(--gold-contrast) rounded-(--r-md) sans text-sm font-medium hover:bg-(--gold-deep) transition-colors"
+          >
+            <FaPlus className="text-xs" />
+            Nueva categoría
+          </button>
         </div>
 
         <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up">

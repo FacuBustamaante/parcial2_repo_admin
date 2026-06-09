@@ -35,6 +35,7 @@ function ProductoModal({
       title={isEdit ? "Editar producto" : "Nuevo producto"}
     >
       <ProductoForm
+        key={isEdit ? `edit-${productoId}` : "create-producto"}
         defaultValues={productoActivo ?? undefined}
         onSubmit={handleSubmit}
       />
