@@ -3,21 +3,19 @@ export const PEDIDO_STATUSES = [
    "PENDIENTE",
    "CONFIRMADO",
    "EN_PREP",
-   "LISTO",
    "ENTREGADO"
 ] as const;
 
 export const COCINA_STATUSES = [
    "CONFIRMADO",
    "EN_PREP",
-   "LISTO"
+   "ENTREGADO",
 ] as const;
 
 export const CAJERO_STATUSES = [
    "CANCELADO",
    "PENDIENTE",
    "CONFIRMADO",
-   "LISTO",
    "ENTREGADO"
 ] as const;
 
@@ -28,7 +26,6 @@ export const STATUS_LABEL: Record<PedidoStatus, string> = {
    PENDIENTE: "Pendiente",
    CONFIRMADO: "Confirmado",
    EN_PREP: "En preparación",
-   LISTO: "Listo para entregar",
    ENTREGADO: "Entregado",
 };
 

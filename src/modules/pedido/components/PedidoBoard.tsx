@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { IPedido } from "../types/IPedido";
 import { CAJERO_STATUSES, PEDIDO_STATUSES, COCINA_STATUSES, type PedidoStatus } from "../types/pedido.constant";
 import StatusColumn from "./StatusColumn";
@@ -7,6 +7,15 @@ import { getNextStatus } from "../helpers/pedidoNextPrevStatus";
 import { listPedidos, cambiarEstadoPedido } from "../service/pedido.service";
 import { ClipLoader } from "react-spinners";
 import { useAuthStore } from "../../../stores/useAuthStore";
+import { useWebSocket, type WsMessage } from "../hooks/useWebSocket";
+
+const ORDER_EVENTS = new Set([
+   "NUEVO_PEDIDO",
+   "PEDIDO_CONFIRMADO",
+   "PEDIDO_EN_PREPARACION",
+   "PEDIDO_CANCELADO",
+   "PEDIDO_ENTREGADO",
+]);
 
 export default function OrdersBoard() {
    const [pedidos, setPedidos] = useState<IPedido[]>([]);
@@ -19,6 +28,30 @@ export default function OrdersBoard() {
          .then(setPedidos)
          .finally(() => setLoading(false));
    }, []);
+
+   const handleWsMessage = useCallback((msg: WsMessage) => {
+      if (msg.event === "WS_CONNECTED") {
+         listPedidos().then(setPedidos);
+         return;
+      }
+      console.log("[WS] evento recibido:", msg.event, msg.data);
+      if (!ORDER_EVENTS.has(msg.event)) return;
+
+      const updated = msg.data as IPedido;
+      if (updated?.id && updated?.estado_codigo) {
+         setPedidos((prev) => {
+            const exists = prev.some((p) => p.id === updated.id);
+            return exists
+               ? prev.map((p) => (p.id === updated.id ? updated : p))
+               : [...prev, updated];
+         });
+      } else {
+         // El backend no mandó el pedido completo; refetch como fallback
+         listPedidos().then(setPedidos);
+      }
+   }, []);
+
+   useWebSocket({ onMessage: handleWsMessage });
 
    const continuarPedido = async (pedido: IPedido) => {
       const nextStatus = getNextStatus(pedido.estado_codigo as PedidoStatus);

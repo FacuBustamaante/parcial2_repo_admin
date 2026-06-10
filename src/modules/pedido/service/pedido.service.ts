@@ -63,12 +63,7 @@ export async function cambiarEstadoPedido(
 ): Promise<IPedido> {
   const response = await apiClient.patch<IPedido>(
     `${BASE}/${pedidoId}/estado`,
-    null,
-    {
-      params: {
-        nuevo_estado: nuevoEstado,
-      },
-    },
+    { nuevo_estado: nuevoEstado },
   );
 
   return response.data;

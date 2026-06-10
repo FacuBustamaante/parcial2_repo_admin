@@ -7,16 +7,16 @@ export function groupPedidosByStatus(
   pedidos: IPedido[],
 ): Record<PedidoStatus, IPedido[]> {
   const initial: Record<PedidoStatus, IPedido[]> = {
+    CANCELADO: [],
     PENDIENTE: [],
     CONFIRMADO: [],
     EN_PREP: [],
-    EN_CAMINO: [],
     ENTREGADO: [],
-    CANCELADO: [],
   };
 
   return pedidos.reduce((acc, pedido) => {
-    acc[pedido.estado_codigo].push(pedido);
+    const key = pedido.estado_codigo as PedidoStatus;
+    if (acc[key]) acc[key].push(pedido);
     return acc;
   }, initial);
 }
