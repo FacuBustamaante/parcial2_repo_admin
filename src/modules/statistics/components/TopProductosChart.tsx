@@ -13,6 +13,7 @@ const TopProductosChart = () => {
 
    const options: ApexOptions = {
       chart: { type: 'bar', toolbar: { show: false } },
+      colors: ['#C9A84C'],
       plotOptions: { bar: { horizontal: true, borderRadius: 4 } },
       xaxis: { categories: data.map((d) => d.producto) },
       dataLabels: { enabled: false },

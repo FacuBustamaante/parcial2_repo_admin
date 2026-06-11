@@ -21,6 +21,7 @@ const PedidosPorPeriodoChart = ({ periodo }: Props) => {
 
    const options: ApexOptions = {
       chart: { type: 'bar', toolbar: { show: false } },
+      colors: ['#C9A84C'],
       xaxis: { categories: fechas },
       dataLabels: { enabled: false },
       plotOptions: { bar: { borderRadius: 4 } },

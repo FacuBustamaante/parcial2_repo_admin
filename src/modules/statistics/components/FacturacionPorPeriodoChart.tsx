@@ -21,10 +21,12 @@ const FacturacionPorPeriodoChart = ({ periodo }: Props) => {
 
    const options: ApexOptions = {
       chart: { type: 'area', toolbar: { show: false } },
+      colors: ['#C9A84C'],
+      fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.5, opacityTo: 0.05 } },
       xaxis: { categories: fechas },
       yaxis: { labels: { formatter: (val) => `$${val.toLocaleString()}` } },
       dataLabels: { enabled: false },
-      stroke: { curve: 'smooth' },
+      stroke: { curve: 'smooth', colors: ['#C9A84C'] },
       tooltip: { y: { formatter: (val) => `$${val.toLocaleString()}` } },
    };
 
