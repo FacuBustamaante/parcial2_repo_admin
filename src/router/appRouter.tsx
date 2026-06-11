@@ -9,7 +9,7 @@ import IngredientePage from "../modules/ingrediente/pages/IngredientePage";
 import CategoriaPage from "../modules/categoria/pages/CategoriaPage";
 import ProductoPage from "../modules/producto/pages/ProductoPage";
 import AdminPage from "../modules/admin/pages/AdminPage";
-import Statistics from "../modules/admin/pages/Statistics";
+import Statistics from "../modules/statistics/pages/StatisticsPage";
 import CocinaPage from "../modules/KDS/pages/CocinaPage";
 import Forbidden from "../shared/layout/Forbidden";
 

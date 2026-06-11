@@ -1,7 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { FaBox, FaTags, FaCarrot, FaUser, FaPlus, FaSignOutAlt, FaShoppingCart, FaChartBar } from "react-icons/fa";
 import { useAuthStore } from "../../stores/useAuthStore";
-import {  ThemeToggle } from "../../shared/components/ThemeToggle";
+import { ThemeToggle } from "../../shared/components/ThemeToggle";
 
 interface Props {
    onCreate?: () => void;
@@ -15,17 +15,10 @@ function Navbar({ onCreate }: Props) {
 
    const path = location.pathname;
 
-   const canAccessStock = hasRole("ADMIN", "STOCK");
-   const canAccessPedidos = hasRole("ADMIN", "PEDIDOS");
-   const canAccessAdmin = hasRole("ADMIN");
+   const canAccessCocina = hasRole("ADMIN", "COCINA");
 
    const navLinks = [
-      { to: "/statistics", label: "Estadísticas", icon: <FaChartBar />, show: canAccessAdmin },
-      { to: "/cajero", label: "Pedidos", icon: <FaShoppingCart />, show: canAccessPedidos },
-      { to: "/productos", label: "Productos", icon: <FaBox />, show: canAccessStock },
-      { to: "/categorias", label: "Categorías", icon: <FaTags />, show: canAccessStock },
-      { to: "/ingredientes", label: "Ingredientes", icon: <FaCarrot />, show: canAccessStock },
-      { to: "/admin", label: "Admin", icon: <FaUser />, show: canAccessAdmin },
+      { to: "/cocina", label: "Pedidos Cocina", icon: <FaCarrot />, show: canAccessCocina },
    ];
 
    const addLabels: Record<string, string> = {
@@ -50,8 +43,37 @@ function Navbar({ onCreate }: Props) {
          </div>
 
          {/* Nav links */}
-         <nav className="flex-1 px-4 py-6 flex flex-col gap-1">
-            <p>Hola</p>
+         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+            <ThemeToggle />
+            {navLinks
+               .filter((l) => l.show)
+               .map(({ to, label, icon }) => {
+                  const isActive = path === to;
+                  return (
+                     <Link
+                        key={to}
+                        to={to}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-(--r-md) sans text-sm transition-colors ${isActive
+                           ? "bg-(--gold-soft) dark:text-(--bg) text-(--gold) dark:bg-(--gold) dark:hover:bg-(--gold-deep)"
+                           : "dark:text-(--surface-3) text-(--text-muted) hover:text-(--text) dark:hover:bg-(--gold) dark:hover:text-(--surface) hover:bg-(--surface-2)"
+                           }`}
+                     >
+                        <span className="text-base shrink-0">{icon}</span>
+                        {label}
+                     </Link>
+                  );
+               })}
+
+            {showAdd && (
+               <button
+                  onClick={onCreate}
+                  className="mt-3 w-full flex items-center gap-2 px-3 py-2.5 bg-(--gold) text-(--gold-contrast) rounded-(--r-md) sans text-sm font-medium hover:bg-(--gold-deep) transition-colors"
+               >
+                  <FaPlus className="text-xs shrink-0" />
+                  {addLabels[path]}
+               </button>
+            )}
+
          </nav>
 
          {/* User section */}

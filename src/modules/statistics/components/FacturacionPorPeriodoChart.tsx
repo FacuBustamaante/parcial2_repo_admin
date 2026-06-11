@@ -1,0 +1,41 @@
+import { useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
+import type { ApexOptions } from 'apexcharts';
+import { getFacturacionPorPeriodo } from '../services/StatisticsService';
+import type { Periodo } from '../types/Statistics';
+
+type Props = {
+   periodo: Periodo;
+};
+
+const FacturacionPorPeriodoChart = ({ periodo }: Props) => {
+   const [fechas, setFechas] = useState<string[]>([]);
+   const [totales, setTotales] = useState<number[]>([]);
+
+   useEffect(() => {
+      getFacturacionPorPeriodo(periodo).then((data) => {
+         setFechas(data.map((d) => d.fecha));
+         setTotales(data.map((d) => d.total));
+      });
+   }, [periodo]);
+
+   const options: ApexOptions = {
+      chart: { type: 'area', toolbar: { show: false } },
+      xaxis: { categories: fechas },
+      yaxis: { labels: { formatter: (val) => `$${val.toLocaleString()}` } },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth' },
+      tooltip: { y: { formatter: (val) => `$${val.toLocaleString()}` } },
+   };
+
+   const series = [{ name: 'Facturación', data: totales }];
+
+   return (
+      <div className="w-full bg-(--bg) shadow border rounded-2xl border-(--line) p-6">
+         <h3 className="text-sm text-gray-500 mb-4">Facturación por {periodo}</h3>
+         <Chart options={options} series={series} type="area" width="100%" height={280} />
+      </div>
+   );
+};
+
+export default FacturacionPorPeriodoChart;

@@ -19,11 +19,11 @@ type Props = {
 
 export default function StatusColumn({ status, orders, onContinue, onCancel }: Props) {
    return (
-      <div className="flex-1 min-w-64 bg-(--surface) border border-(--line) rounded-(--r-lg) flex flex-col max-h-[calc(100vh-12rem)]">
+      <div className="flex-1 min-w-64 bg-(--surface) border border-(--line) rounded-(--r-lg) flex flex-col max-h-[calc(100vh-12rem)] dark:bg-zinc-100 dark:border-gray-300">
 
          {/* Header */}
-         <div className="px-4 py-3 border-b border-(--line) flex items-center justify-between shrink-0">
-            <h3 className="sans text-sm font-medium text-(--text)">{STATUS_LABEL[status]}</h3>
+         <div className="px-4 py-3 border-b border-(--line) flex items-center justify-between shrink-0 dark:border-gray-300">
+            <h3 className="sans text-sm font-medium text-(--text) dark:text-(--surface)">{STATUS_LABEL[status]}</h3>
             <span className={`sans text-xs px-2 py-0.5 rounded-full border ${columnAccent[status]}`}>
                {orders.length}
             </span>
@@ -32,7 +32,7 @@ export default function StatusColumn({ status, orders, onContinue, onCancel }: P
          {/* Cards */}
          <div className="flex-1 overflow-y-auto p-3 space-y-2">
             {orders.length === 0 ? (
-               <p className="sans text-xs text-(--text-faint) text-center py-6">Sin pedidos</p>
+               <p className="sans text-xs text-(--text-faint) text-center py-6 dark:text-(--surface)">Sin pedidos</p>
             ) : (
                orders.map((order) => (
                   <PedidoCard
