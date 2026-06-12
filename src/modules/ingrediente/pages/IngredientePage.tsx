@@ -106,7 +106,7 @@ function IngredientePage() {
       <div className="flex min-h-screen bg-(--bg) dark:bg-zinc-100">
          <Navbar onCreate={handleOpenCreate} />
 
-         <main className="flex-1 ml-64 p-8">
+         <main className="flex-1 ml-0 lg:ml-64 px-4 pt-16 pb-6 lg:p-8">
             <div className="mb-8 flex items-start justify-between gap-4">
                <div>
                   <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1 dark:text-gray-400">Gestión</p>
@@ -123,6 +123,7 @@ function IngredientePage() {
             </div>
 
             <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up dark:bg-zinc-100 dark:border-gray-300">
+               <div className="overflow-x-auto">
                <table className="w-full">
                   <thead>
                      <tr className="border-b border-(--line) dark:border-gray-300">
@@ -170,6 +171,7 @@ function IngredientePage() {
                      ))}
                   </tbody>
                </table>
+               </div>
             </div>
 
             {isModalOpen && (

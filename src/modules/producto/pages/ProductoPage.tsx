@@ -106,7 +106,7 @@ function ProductoPage() {
       <div className="flex min-h-screen bg-(--bg) dark:bg-zinc-100">
          <Navbar onCreate={handleOpenCreate} />
 
-         <main className="flex-1 ml-64 p-8">
+         <main className="flex-1 ml-0 lg:ml-64 px-4 pt-16 pb-6 lg:p-8">
             <div className="mb-8 flex items-start justify-between gap-4">
                <div>
                   <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1 dark:text-gray-400">Gestión</p>
@@ -123,6 +123,7 @@ function ProductoPage() {
             </div>
 
             <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up dark:bg-zinc-100 dark:border-gray-300">
+               <div className="overflow-x-auto">
                <table className="w-full">
                   <thead>
                      <tr className="border-b border-(--line) dark:border-gray-300 dark:bg-gray-200">
@@ -135,7 +136,7 @@ function ProductoPage() {
                   </thead>
                   <tbody>
                      {productos.map((p, index) => (
-                        <tr key={p.id} className="border-b border-(--line) last:border-0 hover:bg-(--surface-2) transition-colors dark dark:border-gray-300 dark:hover:bg-gray-50">
+                        <tr key={p.id} className="border-b border-(--line) last:border-0 transition-colors hover:bg-(--surface-2) dark:border-gray-300 dark:hover:bg-zinc-50">
                            <td className="px-5 py-3.5 sans text-sm text-(--text-muted) dark:text-gray-400">{index + 1}</td>
                            <td className="px-5 py-3.5 sans text-sm text-(--text) font-medium dark:text-(--surface)">
                               {p.nombre}
@@ -162,6 +163,7 @@ function ProductoPage() {
                      ))}
                   </tbody>
                </table>
+               </div>
             </div>
 
             {isModalOpen && (

@@ -188,3 +188,32 @@ body {
    gap: 40px;
    align-items: start;
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+   .grid-detail {
+      grid-template-columns: 1fr;
+      gap: 24px;
+   }
+
+   .grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+   }
+
+   .media {
+      height: 200px;
+   }
+}
+
+/* ── Large screens (1440px+) ── */
+@media (min-width: 1440px) {
+   :root {
+      --grid-col-gap: 32px;
+      --card-gap: 24px;
+   }
+
+   .grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+   }
+}
