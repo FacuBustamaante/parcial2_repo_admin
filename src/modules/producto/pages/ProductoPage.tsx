@@ -103,14 +103,14 @@ function ProductoPage() {
       );
 
    return (
-      <div className="flex min-h-screen bg-(--bg)">
+      <div className="flex min-h-screen bg-(--bg) dark:bg-zinc-100">
          <Navbar onCreate={handleOpenCreate} />
 
          <main className="flex-1 ml-64 p-8">
             <div className="mb-8 flex items-start justify-between gap-4">
                <div>
-                  <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1">Gestión</p>
-                  <h1 className="serif text-3xl font-semibold text-(--text)">Productos</h1>
+                  <p className="sans text-xs text-(--text-faint) uppercase tracking-widest mb-1 dark:text-gray-400">Gestión</p>
+                  <h1 className="serif text-3xl font-semibold text-(--text) dark:text-(--surface)">Productos</h1>
                </div>
 
                <button
@@ -122,12 +122,12 @@ function ProductoPage() {
                </button>
             </div>
 
-            <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up">
+            <div className="bg-(--surface) border border-(--line) rounded-(--r-lg) overflow-hidden animate-fade-in-up dark:bg-zinc-100 dark:border-gray-300">
                <table className="w-full">
                   <thead>
-                     <tr className="border-b border-(--line)">
+                     <tr className="border-b border-(--line) dark:border-gray-300 dark:bg-gray-200">
                         {["#", "Nombre", "Precio", "Stock", "Acciones"].map((h) => (
-                           <th key={h} className="px-5 py-3 text-left sans text-xs font-medium text-(--text-faint) uppercase tracking-wider">
+                           <th key={h} className="px-5 py-3 text-left sans text-xs font-medium text-(--text-faint) uppercase tracking-wider dark:text-(--surface)">
                               {h}
                            </th>
                         ))}
@@ -135,11 +135,13 @@ function ProductoPage() {
                   </thead>
                   <tbody>
                      {productos.map((p, index) => (
-                        <tr key={p.id} className="border-b border-(--line) last:border-0 hover:bg-(--surface-2) transition-colors">
-                           <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">{index + 1}</td>
-                           <td className="px-5 py-3.5 sans text-sm text-(--text) font-medium">{p.nombre}</td>
+                        <tr key={p.id} className="border-b border-(--line) last:border-0 hover:bg-(--surface-2) transition-colors dark dark:border-gray-300 dark:hover:bg-gray-50">
+                           <td className="px-5 py-3.5 sans text-sm text-(--text-muted) dark:text-gray-400">{index + 1}</td>
+                           <td className="px-5 py-3.5 sans text-sm text-(--text) font-medium dark:text-(--surface)">
+                              {p.nombre}
+                           </td>
                            <td className="px-5 py-3.5 sans text-sm text-(--gold)">${p.precio_base}</td>
-                           <td className="px-5 py-3.5 sans text-sm text-(--text-muted)">{p.stock_cantidad}</td>
+                           <td className="px-5 py-3.5 sans text-sm text-(--text-muted) dark:text-gray-400">{p.stock_cantidad}</td>
                            <td className="px-5 py-3.5">
                               <div className="flex items-center gap-2">
                                  <button

@@ -19,11 +19,13 @@ type Props = {
 
 export default function StatusColumn({ status, orders, onContinue, onCancel }: Props) {
    return (
-      <div className="flex-1 min-w-64 bg-(--surface) border border-(--line) rounded-(--r-lg) flex flex-col max-h-[calc(100vh-12rem)] dark:bg-zinc-100 dark:border-gray-300">
+      <div className="flex-1 min-w-64 bg-(--surface) border border-(--line) rounded-(--r-lg) flex flex-col max-h-[calc(100vh-12rem)] dark:bg-(--surface-dark) dark:border-gray-300">
 
          {/* Header */}
-         <div className="px-4 py-3 border-b border-(--line) flex items-center justify-between shrink-0 dark:border-gray-300">
-            <h3 className="sans text-sm font-medium text-(--text) dark:text-(--surface)">{STATUS_LABEL[status]}</h3>
+         <div className="px-4 py-3 border-b border-(--line) flex items-center justify-between shrink-0 dark:rounded-(--r-lg) dark:border-gray-300 dark:bg-gray-200">
+            <h3 className="sans text-sm font-medium text-(--text) dark:text-(--surface)">
+               {STATUS_LABEL[status]}
+            </h3>
             <span className={`sans text-xs px-2 py-0.5 rounded-full border ${columnAccent[status]}`}>
                {orders.length}
             </span>
