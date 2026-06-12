@@ -31,8 +31,8 @@ const PedidosPorPeriodoChart = ({ periodo }: Props) => {
    const series = [{ name: 'Pedidos', data: cantidades }];
 
    return (
-      <div className="w-full bg-(--bg) shadow border rounded-2xl border-(--line) p-6">
-         <h3 className="text-sm text-gray-500 mb-4">Pedidos por {periodo}</h3>
+      <div className="w-full bg-(--bg) shadow border rounded-2xl border-(--line) p-6 dark:bg-zinc-100 dark:border-zinc-300">
+         <h3 className="text-sm text-gray-500 mb-4 dark:text-(--surface) font-bold">Pedidos por {periodo}</h3>
          <Chart options={options} series={series} type="bar" width="100%" height={280} />
       </div>
    );

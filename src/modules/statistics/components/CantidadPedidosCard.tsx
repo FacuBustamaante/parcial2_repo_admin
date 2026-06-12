@@ -9,7 +9,7 @@ const CantidadPedidosCard = () => {
    }, []);
 
    return (
-      <div className="w-full flex flex-col items-center bg-(--bg) justify-center shadow border rounded-2xl border-(--line) py-16 px-4">
+      <div className="w-full flex flex-col items-center bg-(--surface) justify-center shadow border rounded-2xl border-(--line) py-16 px-4">
          <span className="text-6xl font-bold text-(--text) sans">
             {cantidad !== null ? cantidad.toLocaleString() : '...'}
          </span>

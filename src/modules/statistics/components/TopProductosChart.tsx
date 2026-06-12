@@ -23,8 +23,8 @@ const TopProductosChart = () => {
    const series = [{ name: 'Cantidad', data: data.map((d) => d.cantidad) }];
 
    return (
-      <div className="bg-(--bg) shadow border rounded-2xl border-(--line) p-6">
-         <h3 className="text-sm text-gray-500 mb-4">Top Productos</h3>
+      <div className="bg-(--bg) shadow border rounded-2xl border-(--line) p-6 dark:bg-zinc-100 dark:border-zinc-300">
+         <h3 className="text-sm text-gray-500 mb-4 dark:text-(--surface) font-bold">Top Productos</h3>
          {data.length > 0 ? (
             <Chart key={data.length} options={options} series={series} type="bar" width="100%" height={300} />
          ) : (
