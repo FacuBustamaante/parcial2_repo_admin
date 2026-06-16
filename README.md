@@ -24,4 +24,5 @@ pnpm run dev
 ```
 
 Link a los videos explicativos:
-https://drive.google.com/drive/folders/15pIkzFZ2VU-PJ3Q5Q892xPFHHQ5GP1-r?usp=sharing
+
+https://drive.google.com/drive/folders/1f0jnTOkNL5PPkug2hSq5NjPi63hHXEkf?usp=sharing
